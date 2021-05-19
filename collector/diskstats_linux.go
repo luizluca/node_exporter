@@ -18,8 +18,8 @@ package collector
 import (
 	"bufio"
 	"fmt"
-	"io"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -31,12 +31,12 @@ import (
 )
 
 const (
-	diskSectorSize    = 512
-	diskstatsFilename = "diskstats"
+	diskSectorSize = 512
 )
 
 var (
-	ignoredDevices = kingpin.Flag("collector.diskstats.ignored-devices", "Regexp of devices to ignore for diskstats.").Default("^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$").String()
+	ignoredDevices    = kingpin.Flag("collector.diskstats.ignored-devices", "Regexp of devices to ignore for diskstats.").Default("^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$").String()
+	includePartitions = kingpin.Flag("collector.diskstats.include-partitions", "Collect partitions as well as disks").Default("true").Bool()
 )
 
 type typedFactorDesc struct {
@@ -54,6 +54,7 @@ func (d *typedFactorDesc) mustNewConstMetric(value float64, labels ...string) pr
 
 type diskstatsCollector struct {
 	ignoredDevicesPattern *regexp.Regexp
+	includePartitions     *bool
 	descs                 []typedFactorDesc
 	logger                log.Logger
 }
@@ -69,6 +70,7 @@ func NewDiskstatsCollector(logger log.Logger) (Collector, error) {
 
 	return &diskstatsCollector{
 		ignoredDevicesPattern: regexp.MustCompile(*ignoredDevices),
+		includePartitions:     includePartitions,
 		descs: []typedFactorDesc{
 			{
 				desc: readsCompletedDesc, valueType: prometheus.CounterValue,
@@ -185,56 +187,44 @@ func NewDiskstatsCollector(logger log.Logger) (Collector, error) {
 }
 
 func (c *diskstatsCollector) Update(ch chan<- prometheus.Metric) error {
-	diskStats, err := getDiskStats()
+	diskStats, err := filepath.Glob(sysFilePath("block/*/stat"))
 	if err != nil {
 		return fmt.Errorf("couldn't get diskstats: %w", err)
 	}
+	if *c.includePartitions {
+		partitionStats, err := filepath.Glob(sysFilePath("block/*/*/stat"))
+		if err != nil {
+			return fmt.Errorf("couldn't get diskstats: %w", err)
+		}
+		diskStats = append(diskStats, partitionStats...)
+	}
 
-	for dev, stats := range diskStats {
+	for _, stats := range diskStats {
+		dev := filepath.Base(filepath.Dir(stats))
 		if c.ignoredDevicesPattern.MatchString(dev) {
 			level.Debug(c.logger).Log("msg", "Ignoring device", "device", dev)
 			continue
 		}
 
-		for i, value := range stats {
-			// ignore unrecognized additional stats
-			if i >= len(c.descs) {
-				break
+		file, err := os.Open(stats)
+		if err != nil {
+			return fmt.Errorf("couldn't open %s: %w", stats, err)
+		}
+
+		scanner := bufio.NewScanner(file)
+		for scanner.Scan() {
+			for i, value := range strings.Fields(scanner.Text()) {
+				// ignore unrecognized additional stats
+				if i >= len(c.descs) {
+					break
+				}
+				v, err := strconv.ParseFloat(value, 64)
+				if err != nil {
+					return fmt.Errorf("invalid value %s in diskstats: %w", value, err)
+				}
+				ch <- c.descs[i].mustNewConstMetric(v, dev)
 			}
-			v, err := strconv.ParseFloat(value, 64)
-			if err != nil {
-				return fmt.Errorf("invalid value %s in diskstats: %w", value, err)
-			}
-			ch <- c.descs[i].mustNewConstMetric(v, dev)
 		}
 	}
 	return nil
-}
-
-func getDiskStats() (map[string][]string, error) {
-	file, err := os.Open(procFilePath(diskstatsFilename))
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	return parseDiskStats(file)
-}
-
-func parseDiskStats(r io.Reader) (map[string][]string, error) {
-	var (
-		diskStats = map[string][]string{}
-		scanner   = bufio.NewScanner(r)
-	)
-
-	for scanner.Scan() {
-		parts := strings.Fields(scanner.Text())
-		if len(parts) < 4 { // we strip major, minor and dev
-			return nil, fmt.Errorf("invalid line in %s: %s", procFilePath(diskstatsFilename), scanner.Text())
-		}
-		dev := parts[2]
-		diskStats[dev] = parts[3:]
-	}
-
-	return diskStats, scanner.Err()
 }

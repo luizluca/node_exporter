@@ -383,26 +383,106 @@ node_cpu_seconds_total{cpu="7",mode="system"} 101.64
 node_cpu_seconds_total{cpu="7",mode="user"} 290.98
 # HELP node_disk_discard_time_seconds_total This is the total number of seconds spent by all discards.
 # TYPE node_disk_discard_time_seconds_total counter
+node_disk_discard_time_seconds_total{device="dm-0"} 0
+node_disk_discard_time_seconds_total{device="dm-1"} 0
+node_disk_discard_time_seconds_total{device="dm-2"} 0
+node_disk_discard_time_seconds_total{device="dm-3"} 0
+node_disk_discard_time_seconds_total{device="dm-4"} 0
+node_disk_discard_time_seconds_total{device="dm-5"} 0
+node_disk_discard_time_seconds_total{device="mmcblk0"} 0
+node_disk_discard_time_seconds_total{device="mmcblk0p1"} 0
+node_disk_discard_time_seconds_total{device="mmcblk0p2"} 0
+node_disk_discard_time_seconds_total{device="nvme0n1"} 0
+node_disk_discard_time_seconds_total{device="sda"} 0
 node_disk_discard_time_seconds_total{device="sdb"} 11.13
 node_disk_discard_time_seconds_total{device="sdc"} 11.13
+node_disk_discard_time_seconds_total{device="sr0"} 0
+node_disk_discard_time_seconds_total{device="vda"} 0
 # HELP node_disk_discarded_sectors_total The total number of sectors discarded successfully.
 # TYPE node_disk_discarded_sectors_total counter
+node_disk_discarded_sectors_total{device="dm-0"} 0
+node_disk_discarded_sectors_total{device="dm-1"} 0
+node_disk_discarded_sectors_total{device="dm-2"} 0
+node_disk_discarded_sectors_total{device="dm-3"} 0
+node_disk_discarded_sectors_total{device="dm-4"} 0
+node_disk_discarded_sectors_total{device="dm-5"} 0
+node_disk_discarded_sectors_total{device="mmcblk0"} 0
+node_disk_discarded_sectors_total{device="mmcblk0p1"} 0
+node_disk_discarded_sectors_total{device="mmcblk0p2"} 0
+node_disk_discarded_sectors_total{device="nvme0n1"} 0
+node_disk_discarded_sectors_total{device="sda"} 0
 node_disk_discarded_sectors_total{device="sdb"} 1.925173784e+09
 node_disk_discarded_sectors_total{device="sdc"} 1.25173784e+08
+node_disk_discarded_sectors_total{device="sr0"} 0
+node_disk_discarded_sectors_total{device="vda"} 0
 # HELP node_disk_discards_completed_total The total number of discards completed successfully.
 # TYPE node_disk_discards_completed_total counter
+node_disk_discards_completed_total{device="dm-0"} 0
+node_disk_discards_completed_total{device="dm-1"} 0
+node_disk_discards_completed_total{device="dm-2"} 0
+node_disk_discards_completed_total{device="dm-3"} 0
+node_disk_discards_completed_total{device="dm-4"} 0
+node_disk_discards_completed_total{device="dm-5"} 0
+node_disk_discards_completed_total{device="mmcblk0"} 0
+node_disk_discards_completed_total{device="mmcblk0p1"} 0
+node_disk_discards_completed_total{device="mmcblk0p2"} 0
+node_disk_discards_completed_total{device="nvme0n1"} 0
+node_disk_discards_completed_total{device="sda"} 0
 node_disk_discards_completed_total{device="sdb"} 68851
 node_disk_discards_completed_total{device="sdc"} 18851
+node_disk_discards_completed_total{device="sr0"} 0
+node_disk_discards_completed_total{device="vda"} 0
 # HELP node_disk_discards_merged_total The total number of discards merged.
 # TYPE node_disk_discards_merged_total counter
+node_disk_discards_merged_total{device="dm-0"} 0
+node_disk_discards_merged_total{device="dm-1"} 0
+node_disk_discards_merged_total{device="dm-2"} 0
+node_disk_discards_merged_total{device="dm-3"} 0
+node_disk_discards_merged_total{device="dm-4"} 0
+node_disk_discards_merged_total{device="dm-5"} 0
+node_disk_discards_merged_total{device="mmcblk0"} 0
+node_disk_discards_merged_total{device="mmcblk0p1"} 0
+node_disk_discards_merged_total{device="mmcblk0p2"} 0
+node_disk_discards_merged_total{device="nvme0n1"} 0
+node_disk_discards_merged_total{device="sda"} 0
 node_disk_discards_merged_total{device="sdb"} 0
 node_disk_discards_merged_total{device="sdc"} 0
+node_disk_discards_merged_total{device="sr0"} 0
+node_disk_discards_merged_total{device="vda"} 0
 # HELP node_disk_flush_requests_time_seconds_total This is the total number of seconds spent by all flush requests.
 # TYPE node_disk_flush_requests_time_seconds_total counter
+node_disk_flush_requests_time_seconds_total{device="dm-0"} 0
+node_disk_flush_requests_time_seconds_total{device="dm-1"} 0
+node_disk_flush_requests_time_seconds_total{device="dm-2"} 0
+node_disk_flush_requests_time_seconds_total{device="dm-3"} 0
+node_disk_flush_requests_time_seconds_total{device="dm-4"} 0
+node_disk_flush_requests_time_seconds_total{device="dm-5"} 0
+node_disk_flush_requests_time_seconds_total{device="mmcblk0"} 0
+node_disk_flush_requests_time_seconds_total{device="mmcblk0p1"} 0
+node_disk_flush_requests_time_seconds_total{device="mmcblk0p2"} 0
+node_disk_flush_requests_time_seconds_total{device="nvme0n1"} 0
+node_disk_flush_requests_time_seconds_total{device="sda"} 0
+node_disk_flush_requests_time_seconds_total{device="sdb"} 0
 node_disk_flush_requests_time_seconds_total{device="sdc"} 1.944
+node_disk_flush_requests_time_seconds_total{device="sr0"} 0
+node_disk_flush_requests_time_seconds_total{device="vda"} 0
 # HELP node_disk_flush_requests_total The total number of flush requests completed successfully
 # TYPE node_disk_flush_requests_total counter
+node_disk_flush_requests_total{device="dm-0"} 0
+node_disk_flush_requests_total{device="dm-1"} 0
+node_disk_flush_requests_total{device="dm-2"} 0
+node_disk_flush_requests_total{device="dm-3"} 0
+node_disk_flush_requests_total{device="dm-4"} 0
+node_disk_flush_requests_total{device="dm-5"} 0
+node_disk_flush_requests_total{device="mmcblk0"} 0
+node_disk_flush_requests_total{device="mmcblk0p1"} 0
+node_disk_flush_requests_total{device="mmcblk0p2"} 0
+node_disk_flush_requests_total{device="nvme0n1"} 0
+node_disk_flush_requests_total{device="sda"} 0
+node_disk_flush_requests_total{device="sdb"} 0
 node_disk_flush_requests_total{device="sdc"} 1555
+node_disk_flush_requests_total{device="sr0"} 0
+node_disk_flush_requests_total{device="vda"} 0
 # HELP node_disk_io_now The number of I/Os currently in progress.
 # TYPE node_disk_io_now gauge
 node_disk_io_now{device="dm-0"} 0
