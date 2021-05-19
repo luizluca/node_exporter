@@ -35,8 +35,8 @@ const (
 )
 
 var (
-	ignoredDevices    = kingpin.Flag("collector.diskstats.ignored-devices", "Regexp of devices to ignore for diskstats.").Default("^(ram|loop|fd|(h|s|v|xv)d[a-z]|nvme\\d+n\\d+p)\\d+$").String()
-	includePartitions = kingpin.Flag("collector.diskstats.include-partitions", "Collect partitions as well as disks").Default("true").Bool()
+	ignoredDevices    = kingpin.Flag("collector.diskstats.ignored-devices", "Regexp of devices to ignore for diskstats.").Default("^(ram|loop|fd)\\d+$").String()
+	includePartitions = kingpin.Flag("collector.diskstats.include-partitions", "Collect partitions as well as disks").Default("false").Bool()
 )
 
 type typedFactorDesc struct {
