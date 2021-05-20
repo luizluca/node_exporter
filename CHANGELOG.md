@@ -1,7 +1,7 @@
 ## master / unreleased
 
 * [CHANGE] Rename flags `collector.filesystem.ignored-mount-points` and `collector.filesystem.ignored-fs-types` to match other collectors
-* [FEATURE]
+* [FEATURE] Add tapestats collector for Linux
 * [ENHANCEMENT]
 * [BUGFIX]
 
